@@ -1,0 +1,66 @@
+1)import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+2)heart_data=pd.read_csv('C:\\Users\\Amit\\Desktop\\heart.csv')
+3)heart_data.head()
+4)heart_data.shape
+5)heart_data.info()
+6)heart_data.isnull().sum() #checking missing value
+7)heart_data.describe()
+8)#checking the distribution of target variable # 1 represent disease and # 0 represnt no disease
+heart_data['target'].value_counts()
+
+9)#print last 5 rows of the dataset
+heart_data.tail()
+
+10)#splitting the feature and target
+X=heart_data.drop(['target'],axis=1)
+Y=heart_data['target']
+
+11)print(X)
+12)print(Y)
+13)#spliting the data into traning and testing
+X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.2,stratify=Y,random_state=2)
+
+14)print(X.shape,X_train.shape,X_test.shape)
+
+15)#Model training 
+model=LogisticRegression()
+
+16)#training the logistic regression model with training data
+model.fit(X_train,Y_train)
+
+17)#Model Evaluation
+ #accuracy in training data
+X_train_prediction=model.predict(X_train)
+training_data_accuracy=accuracy_score(X_train_prediction,Y_train)
+
+
+18)print("Accuracy Score on training data",training_data_accuracy)
+19) #accuracy in test data
+X_test_prediction=model.predict(X_test)
+test_data_accuracy=accuracy_score(X_test_prediction,Y_test)
+
+20)print("Accuracy score on testing data",test_data_accuracy)
+
+21)#Builing a predicive system
+# Predicting for the entire dataset
+predictions = model.predict(X)
+
+# Print out the predictions for each instance
+for i in range(len(predictions)):
+    print(f"Instance {i+1}: Prediction = {predictions[i]}")
+    if predictions[i] == 0:
+        print("The person does not have heart disease")
+    else:
+        print("The person has heart disease")
+22)# Adding the predictions as a new column to the original DataFrame
+heart_data['Prediction'] = predictions
+
+# Displaying the first few rows of the updated DataFrame
+print(heart_data.head())
+
